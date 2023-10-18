@@ -8,12 +8,10 @@ CREATE TABLE `room` (
   PRIMARY KEY (`room_id`)
 );
 
-
-INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`)
- VALUES (1, 'Pieza 201', 'Si');
- 
- INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`)
- VALUES (1, 'Pieza 301', 'Si');
- 
-  INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`)
- VALUES (2, 'Pieza 101', 'No');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (1, 'Pieza 201', 'Si');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (1, 'Pieza 301', 'Si');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (2, 'Pieza 101', 'No');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (2, 'Pieza 102', 'Si');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (2, 'Pieza 103', 'Si');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (2, 'Pieza 104', 'Si');
+INSERT INTO `room` (`hotel_id`,`room_name`, `room_available`) VALUES (2, 'Pieza 105', 'Si');
