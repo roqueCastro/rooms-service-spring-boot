@@ -46,7 +46,8 @@ public class RoomController  {
 		return (List<RoomsHotel>) service.searchRoomWithHotelById(id);
 	}
 	
-	
+
+	@GetMapping("rooms-one/{id}")
 	public List<RoomsHotel> searchRoomsWithHotelByIdAlternative(@PathVariable long id) {
 		return (List<RoomsHotel>) service.searchRoomWithHotelOutById(id);
 	}
