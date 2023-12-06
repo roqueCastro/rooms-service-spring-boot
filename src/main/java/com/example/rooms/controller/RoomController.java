@@ -13,6 +13,7 @@ import com.example.rooms.config.RoomServiceConfiguraction;
 import com.example.rooms.model.PropertiesRoom;
 import com.example.rooms.model.Room;
 import com.example.rooms.model.RoomsHotel;
+import com.example.rooms.model.RoomsReservation;
 import com.example.rooms.services.IRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +47,9 @@ public class RoomController  {
 	}
 	
 	
+	//--------------------- HOTEL ----------------------
+	
+	
 	@GetMapping("rooms-with-hotel/{id}")
 	@Retry(name="searchRoomsWithHotelByIdSupportRetry", fallbackMethod = "searchRoomsWithHotelByIdAlternative")
 	public List<RoomsHotel> searchRoomsWithHotelById(@PathVariable long id) {
@@ -59,6 +63,16 @@ public class RoomController  {
 		logger.info("Inicio del método searchRoomsWithHotelByIdAlternative");
 		return (List<RoomsHotel>) service.searchRoomWithHotelOutById(id);
 	}
+	
+	
+	
+	//--------------------- RESERVATION ----------------------
+	
+	@GetMapping("room-by-id-with-reservations/{id}")
+	public RoomsReservation searchRoomByIdWithReservations(@PathVariable long id) {
+		return service.searchRoomByIdWithReservation(id);
+	}
+	
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.rooms.dao.IRoomDao;
 import com.example.rooms.model.Hotel;
+import com.example.rooms.model.Reservation;
 import com.example.rooms.model.Room;
 import com.example.rooms.model.RoomsHotel;
+import com.example.rooms.model.RoomsReservation;
 import com.example.rooms.services.client.HotelFeingClient;
-import com.google.common.base.Optional;
+import com.example.rooms.services.client.ReservationFeingClient;
 
 @Service
 public class IRoomServiceImpl implements IRoomService {
@@ -28,10 +31,16 @@ public class IRoomServiceImpl implements IRoomService {
 	
 	@Autowired
 	HotelFeingClient hotelFeingClient;
+	
+	@Autowired
+	ReservationFeingClient reservationFeingClient;
 
 	public List<Room> search() {
 		return (List<Room>) roomDao.findAll();
 	}
+	
+	
+	//------------------------- HOTEL -----------------------------------
 
 	@Override
 	public List<Room> searchRoomByHotelId(long hotelId) {
@@ -94,6 +103,53 @@ public class IRoomServiceImpl implements IRoomService {
 		
 		return roomsHotels;
 	}
+
+	
+	//------------------------- RESERVATION -----------------------------------
+
+	@Override
+	public RoomsReservation searchRoomByIdWithReservation(long roomId) {
+		
+		Optional<Room> room = this.roomDao.findById(roomId);
+		
+		
+//		****************FEING***********
+		List<Reservation> reservations = reservationFeingClient.searchReservationsRoomId(roomId);
+		
+		RoomsReservation romReservation = new RoomsReservation();
+		romReservation.setHotelId(room.get().getHotelId());
+		romReservation.setRoomAvailable(room.get().getRoomAvailable());
+		romReservation.setRoomId(room.get().getRoomId());
+		romReservation.setRoomName(room.get().getRoomName());
+		
+		romReservation.setReservations(reservations);
+	
+		
+		return romReservation;
+	}
+	
+	
+//	@Override
+//	public RoomsReservation searchRoomByIdOutReservation(long roomId) {
+//		RoomsReservation roomsReservation = new RoomsReservation();
+//		
+//		Optional<Room> room = this.roomDao.findById(roomId);
+//		
+//		
+////		****************FEING***********
+//		List<Reservation> reservations = reservationFeingClient.searchReservationsRoomId(roomId);
+//		
+//		RoomsReservation romReservation = new RoomsReservation();
+//		romReservation.setHotelId(room.get().getHotelId());
+//		romReservation.setRoomAvailable(room.get().getRoomAvailable());
+//		romReservation.setRoomId(room.get().getRoomId());
+//		romReservation.setRoomName(room.get().getRoomName());
+//		
+//		roomsReservation.setReservations(reservations);
+//	
+//		
+//		return roomsReservation;
+//	}
 
 
 }
