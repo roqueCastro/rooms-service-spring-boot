@@ -45,6 +45,21 @@ public class RoomController  {
 		logger.info("Inicio del método searchRoomsByHotelId");
 		return (List<Room>) service.searchRoomByHotelId(id);
 	}
+
+
+	//--------------------- HOTEL ID - WITH RESERVATIONS -------------------
+	@GetMapping("rooms-by-id-hotel-with-reservations/{id}")
+	@Retry(name="searchByIdHotelWithReservationsSupportRetry", fallbackMethod = "searchByIdHotelOutReservations")
+	public List<RoomsReservation> searchByIdHotelWithReservations(@PathVariable long id) {
+		logger.info("Inicio del método searchByIdHotelWithReservations");
+		return service.searchByIdHotelWithReservations(id);
+	}
+
+	@GetMapping("rooms-by-id-hotel-out-reservations/{id}")
+	public List<RoomsReservation> searchByIdHotelOutReservations(@PathVariable long id, Throwable thr) {
+		logger.info("Inicio del método searchByIdHotelOutReservations");
+		return service.searchByIdHotelOutReservations(id);
+	}
 	
 	
 	//--------------------- HOTEL ----------------------
@@ -59,7 +74,7 @@ public class RoomController  {
 	
 
 	@GetMapping("rooms-one/{id}")
-	public List<RoomsHotel> searchRoomsWithHotelByIdAlternative(@PathVariable long id) {
+	public List<RoomsHotel> searchRoomsWithHotelByIdAlternative(@PathVariable long id, Throwable thr) {
 		logger.info("Inicio del método searchRoomsWithHotelByIdAlternative");
 		return (List<RoomsHotel>) service.searchRoomWithHotelOutById(id);
 	}
@@ -67,10 +82,16 @@ public class RoomController  {
 	
 	
 	//--------------------- RESERVATION ----------------------
-	
 	@GetMapping("room-by-id-with-reservations/{id}")
+	@Retry(name="searchRoomByIdWithReservationsSupportRetry", fallbackMethod = "searchRoomByIdOutReservationsAlternatives")
 	public RoomsReservation searchRoomByIdWithReservations(@PathVariable long id) {
 		return service.searchRoomByIdWithReservation(id);
+	}
+	
+	
+	@GetMapping("room-by-id-out-reservations/{id}")
+	public RoomsReservation searchRoomByIdOutReservationsAlternatives(@PathVariable long id, Throwable thr) {
+		return service.searchRoomByIdOutReservation(id);
 	}
 	
 	

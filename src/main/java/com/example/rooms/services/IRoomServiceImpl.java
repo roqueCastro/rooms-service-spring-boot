@@ -48,6 +48,72 @@ public class IRoomServiceImpl implements IRoomService {
 		return rooms;
 	}
 
+
+
+	@Override
+	public List<RoomsReservation> searchByIdHotelWithReservations(long hotelId) {
+		
+		List<RoomsReservation> roomsReservations = new ArrayList<>();
+		
+		
+		List<Room> rooms = this.roomDao.findByHotelId(hotelId);
+		
+		
+//		****************FEING***********
+		// List<Reservation> reservations = reservationFeingClient.searchReservationsRoomId(roomId);
+
+		//ASIGNAR NUEVA
+		rooms.stream().forEach((room) -> {
+			RoomsReservation romReservation = new RoomsReservation();
+			romReservation.setHotelId(room.getHotelId());
+			romReservation.setRoomAvailable(room.getRoomAvailable());
+			romReservation.setRoomId(room.getRoomId());
+			romReservation.setRoomName(room.getRoomName());
+
+
+			//CONSULTA LIST RESERVATIONS
+			List<Reservation> reservations = reservationFeingClient.searchReservationsRoomId(room.getRoomId());
+			
+			romReservation.setReservations(reservations);
+
+
+			roomsReservations.add(romReservation);
+		});
+	
+		
+		return roomsReservations;
+	}
+
+
+
+	@Override
+	public List<RoomsReservation> searchByIdHotelOutReservations(long hotelId) {
+		
+		List<RoomsReservation> roomsReservations = new ArrayList<>();
+		
+		
+		List<Room> rooms = this.roomDao.findByHotelId(hotelId);
+		
+		
+//		****************FEING***********
+		// List<Reservation> reservations = reservationFeingClient.searchReservationsRoomId(roomId);
+
+		//ASIGNAR NUEVA
+		rooms.stream().forEach((room) -> {
+			RoomsReservation romReservation = new RoomsReservation();
+			romReservation.setHotelId(room.getHotelId());
+			romReservation.setRoomAvailable(room.getRoomAvailable());
+			romReservation.setRoomId(room.getRoomId());
+			romReservation.setRoomName(room.getRoomName());
+			roomsReservations.add(romReservation);
+		});
+	
+		
+		return roomsReservations;
+	}
+
+
+
 	@Override
 	public List<RoomsHotel> searchRoomWithHotelById(long hotelId) {
 		List<RoomsHotel> roomsHotels = new ArrayList<>();
@@ -123,6 +189,28 @@ public class IRoomServiceImpl implements IRoomService {
 		romReservation.setRoomName(room.get().getRoomName());
 		
 		romReservation.setReservations(reservations);
+	
+		
+		return romReservation;
+	}
+	
+	
+	@Override
+	public RoomsReservation searchRoomByIdOutReservation(long roomId) {
+		
+		Optional<Room> room = this.roomDao.findById(roomId);
+		
+		
+//		****************FEING***********
+//		List<Reservation> reservations = reservationFeingClient.searchReservationsRoomId(roomId);
+		
+		RoomsReservation romReservation = new RoomsReservation();
+		romReservation.setHotelId(room.get().getHotelId());
+		romReservation.setRoomAvailable(room.get().getRoomAvailable());
+		romReservation.setRoomId(room.get().getRoomId());
+		romReservation.setRoomName(room.get().getRoomName());
+		
+//		romReservation.setReservations(reservations);
 	
 		
 		return romReservation;
